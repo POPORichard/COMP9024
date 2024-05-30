@@ -91,6 +91,9 @@ int main(void) {
     // The values of i and j are passed.
     Swap2(i, j);
     printf("i = %d, j = %d\n\n", i, j);
+
+    printf("finish !");
+
     return 0;
 }
 

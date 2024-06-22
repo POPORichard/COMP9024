@@ -37,6 +37,12 @@ For example, the Directed Acyclic Graph (DAG) in [COMP9024/C/HowToMake](../../C/
 
 The target and dependency files serve as nodes within the DAG, with the dependency relationships forming the edges of the DAG.
 
+## [DOT language](https://en.wikipedia.org/wiki/DOT_(graph_description_language))
+
+Graph visualization is a method of representing structural information as diagrams.
+
+DOT is the graph description language, which describes graphs, nodes, and edges.
+
 
 ## 1 How to download this project in [CSE VLAB](https://vlabgateway.cse.unsw.edu.au/)
 
@@ -233,10 +239,11 @@ entry:
 
 | Edges in a Constraint Graph | Instruction in LLVM IR | Meaning |
 | :----------------: | :------: | :----: |
-| <font color="green">Green</font>       |   %aa = alloca i8   | AddressOf |
-| <font color="black">Black</font>      |   %p = %pa,  (passing argument)   | Copy |
-| <font color="red">Red</font>      |   %0 = load i8*, i8** %p   | Memory Read/Load |
-| <font color="blue">Store</font>     |   store i8* %1, i8** %p   | Memory Write/Store |
+| $\color{green}{\textsf{Green}}$  |   %aa = alloca i8   | AddressOf |
+| $\color{black}{\textsf{Black}}$  |   %p = %pa,  (passing argument)   | Copy |
+| $\color{red}{\textsf{Red}}$    |   %0 = load i8*, i8** %p   | Memory Read/Load |
+| $\color{blue}{\textsf{Blue}}$    |   store i8* %1, i8** %p   | Memory Write/Store |
+
 
 **GetElementOffset instructions (for accessing a struct field) are not included int this example.**
 

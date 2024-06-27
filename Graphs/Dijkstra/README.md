@@ -2,11 +2,11 @@
 
 ``` sh
 /*******************************************************************
-                Tutorial 5    Dijkstra's algorithm 
+                    Dijkstra's algorithm 
 
-    1.  How to use Dijkstra's Algorithm to get the shortest distances
+    1.  How to use Dijkstra's algorithm in a directed graph
 
-    2.  How to display the shortest paths from Dijkstra's Algorithm
+    2.  How to use Dijkstra's algorithm in an undirected graph
 
 
 
@@ -23,10 +23,6 @@ To simplify our discussions, we assume the distance from one node to another (ed
 
 We have discussed the format of dot files in [COMP9024/Graphs](../../Graphs/Dot2Png/README.md), how to create a directed graph in [COMP9024/Graphs/DirectedGraph](../../Graphs/DirectedGraph/README.md), and how to create an undirected graph in [COMP9024/Graphs/UndirectedGraph](../../Graphs/UndiirectedGraph/README.md).
 
-Taking a directed graph as our example, in this tutorial, we'll explore how to use Dijkstra's algorithm to find the shortest distances from a given node.
-
-Displaying the shortest paths is left as the weekly practical exercise.
-
 
 ## 1 How to download Tutorials in [CSE VLAB](https://vlabgateway.cse.unsw.edu.au/)
 
@@ -36,9 +32,9 @@ Open a terminal (Applications -> Terminal Emulator)
 
 $ git clone https://github.com/sheisc/COMP9024.git
 
-$ cd COMP9024/Tutorials/Week7
+$ cd COMP9024/Graphs/Dijkstra
 
-Week7$ 
+Dijkstra$ 
 
 ```
 
@@ -48,11 +44,11 @@ Week7$
 
 ```sh
 
-Week7$ code
+Dijkstra$ code
 
 ```
 
-Two configuration files (Week7/.vscode/[launch.json](https://code.visualstudio.com/docs/cpp/launch-json-reference) and Week7/.vscode/[tasks.json](https://code.visualstudio.com/docs/editor/tasks)) have been preset.
+Two configuration files (Dijkstra/.vscode/[launch.json](https://code.visualstudio.com/docs/cpp/launch-json-reference) and Dijkstra/.vscode/[tasks.json](https://code.visualstudio.com/docs/editor/tasks)) have been preset.
 
 
 
@@ -60,7 +56,7 @@ Two configuration files (Week7/.vscode/[launch.json](https://code.visualstudio.c
 
 In the window of Visual Studio Code, please click "File" and "Open Folder",
 
-select the folder "COMP9024/Tutorials/Week7", then click the "Open" button.
+select the folder "COMP9024/Graphs/Dijkstra", then click the "Open" button.
 
 
 ### 2.2 Build the project in VS Code
@@ -89,8 +85,7 @@ Then, click **Run -> Start Debugging**
 |    |
 |    ├── Graph.c         containing the code for graphs
 |    ├── Graph.h
-|    ├── Stack.c         For outputting the shortest paths  
-|    ├── Stack.h
+|    |
 |    ├── main.c          main()
 |
 └── .vscode              containing configuration files for Visual Studio Code
@@ -104,7 +99,7 @@ Then, click **Run -> Start Debugging**
 Makefile is discussed in [COMP9024/C/HowToMake](../../C/HowToMake/README.md).
 
 
-## 3 The main procedure of Dijkstra
+## 3 The main procedure of Dijkstra in a directed graph
 
 ### 3.1 make and ./main
 
@@ -112,9 +107,9 @@ Makefile is discussed in [COMP9024/C/HowToMake](../../C/HowToMake/README.md).
 
 ``` sh
 
-Week7$ make
+Dijkstra$ make
 
-Week7$ ./main
+Dijkstra$ ./main
 
 Shortest path from node 3 to node 0: 4
 Shortest path from node 3 to node 1: INF 
@@ -133,7 +128,7 @@ Shortest path from node 3 to node 7: 10
 
 Observe the procedure of Dijkstra's algorithm (starting from the node 3) via 'make view'
 ```sh
-Week7$ make view
+Dijkstra$ make view
 find . -name "*.png" | sort | xargs feh &
 ```
 
@@ -144,34 +139,54 @@ Here, **feh** is an image viewer available in [CSE VLAB](https://vlabgateway.cse
 
 | Initial | 
 |:-------------:|
-| <img src="images/Dijkstra_0000.png" width="50%" height="50%"> |  
+| <img src="images/DijkstraDirected_0000.png" width="50%" height="50%"> |  
 
 
-| Step 1 | Step 2  |
+| Step 1 |  |
 |:-------------:|:-------------:|
-| <img src="images/Dijkstra_0001.png" width="50%" height="50%"> |  <img src="images/Dijkstra_0002.png" width="50%" height="50%"> | 
+| <img src="images/DijkstraDirected_0001.png" width="50%" height="50%"> |  <img src="images/DijkstraDirected_0002.png" width="50%" height="50%"> | 
 
 
-
-|Step 3 | Step 4 |
+| Step 2 |  |
 |:-------------:|:-------------:|
-|<img src="images/Dijkstra_0003.png" width="50%" height="50%"> | <img src="images/Dijkstra_0004.png" width="50%" height="50%"> | 
+| <img src="images/DijkstraDirected_0003.png" width="50%" height="50%"> |  <img src="images/DijkstraDirected_0004.png" width="50%" height="50%"> | 
 
 
-| Step 5 | Step 6|
+|Step 3 |  |
 |:-------------:|:-------------:|
-| <img src="images/Dijkstra_0005.png" width="50%" height="50%"> |  <img src="images/Dijkstra_0006.png" width="50%" height="50%"> | 
+|<img src="images/DijkstraDirected_0005.png" width="50%" height="50%"> |  | 
 
-| Step 7 | Step 8 |
+
+|Step 4 | |
 |:-------------:|:-------------:|
-| <img src="images/Dijkstra_0007.png" width="50%" height="50%"> | <img src="images/Dijkstra_0008.png" width="50%" height="50%"> | 
+|<img src="images/DijkstraDirected_0006.png" width="50%" height="50%"> | <img src="images/DijkstraDirected_0007.png" width="50%" height="50%"> | 
+
+
+| Step 5 | |
+|:-------------:|:-------------:|
+| <img src="images/DijkstraDirected_0008.png" width="50%" height="50%"> |  <img src="images/DijkstraDirected_0009.png" width="50%" height="50%"> | 
+
+| Step 6 | |
+|:-------------:|:-------------:|
+| <img src="images/DijkstraDirected_0010.png" width="50%" height="50%"> |   | 
+
+| Step 7 ||
+|:-------------:|:-------------:|
+| <img src="images/DijkstraDirected_0011.png" width="50%" height="50%"> | | 
+
+
+| Step 8 |  |
+|:-------------:|:-------------:|
+| <img src="images/DijkstraDirected_0012.png" width="50%" height="50%"> |  | 
 
 ### 3.3 More details
 
 ```sh
-Week7$ make
+Dijkstra$ make
 
-Week7$ ./main
+Dijkstra$ ./main
+
+########################### TestDijkstra(directed) ######################
 
 
 **********  The Adjacency Matrix ************* 
@@ -184,7 +199,15 @@ Week7$ ./main
 0 0 0 0 0 5 0 3 
 0 0 0 0 0 0 0 0 
 
-
+****** Graph Nodes ********
+Graph Node 0: 0
+Graph Node 1: 1
+Graph Node 2: 2
+Graph Node 3: 3
+Graph Node 4: 4
+Graph Node 5: 5
+Graph Node 6: 6
+Graph Node 7: 7
 
 Dijkstra() starting from node 3:
 
@@ -360,8 +383,6 @@ Node 1 is selected
 
 	-----------------------------------------------------------------------------------
 
-
-
 Shortest path from node 3 to node 0: 4
 Shortest path from node 3 to node 1: INF 
 Shortest path from node 3 to node 2: 6
@@ -371,9 +392,14 @@ Shortest path from node 3 to node 5: 11
 Shortest path from node 3 to node 6: 7
 Shortest path from node 3 to node 7: 10
 
+
 ```
 
-## 4 Data structure
+
+## 4 The main procedure of Dijkstra in an undirected graph
+
+
+## 5 Data structure
 ```C
 // Storing information of a graph node
 struct GraphNode {
@@ -420,7 +446,8 @@ struct Graph{
 #define  MatrixElement(pGraph, u, v)  (pGraph)->pAdjMatrix[(pGraph)->n * (u) + (v)]
 
 ```
-## 5 Algorithm
+
+## 6 Algorithm
 
 
 ``` C
@@ -444,6 +471,10 @@ static long getNodeIdWithMinDistance(AdjMatrixElementTy *distances, int *visited
     return minIndex;
 }
 
+
+static long imgCnt = 0;
+
+
 void Dijkstra(struct Graph *pGraph, long startNodeId) {
     assert(IsLegalNodeNum(pGraph, startNodeId));
 
@@ -452,7 +483,7 @@ void Dijkstra(struct Graph *pGraph, long startNodeId) {
 
     assert(visited);
 
-    static long cnt = 0;       
+    imgCnt = 0;     
 
     // 
     for (long i = 0; i < pGraph->n; i++) {
@@ -460,29 +491,48 @@ void Dijkstra(struct Graph *pGraph, long startNodeId) {
         visited[i] = 0;
     }
 
-    GenOneImage(pGraph, "Dijkstra", "images/Dijkstra", cnt, visited);
+    if (pGraph->isDirected) {
+        GenOneImage(pGraph, "DijkstraDirected", "images/DijkstraDirected", imgCnt, visited);
+    } else {
+        GenOneImage(pGraph, "DijkstraUndirected", "images/DijkstraUndirected", imgCnt, visited);
+    }
     //
     distances[startNodeId] = 0;
     // Find the shortest distances
     for (long i = 0; i < pGraph->n; i++) {
-        printf("------------------------------------------ Step %ld ------------------------------------------\n\n", i+1);
+        printf("============================================== Step %ld ==============================================\n\n", i+1);
         long u = getNodeIdWithMinDistance(distances, visited, pGraph->n);
         PrintDistancesAndVisited(pGraph, distances, visited, NULL);
 
         visited[u] = 1;
         printf("Node %ld is selected\n\n", u);               
             
-        cnt++;
-        GenOneImage(pGraph, "Dijkstra", "images/Dijkstra", cnt, visited);
+        imgCnt++;
 
+        if (pGraph->isDirected) {
+            GenOneImage(pGraph, "DijkstraDirected", "images/DijkstraDirected", imgCnt, visited);
+        } else {
+            GenOneImage(pGraph, "DijkstraUndirected", "images/DijkstraUndirected", imgCnt, visited);
+        }
+        int changed = 0;
         for (long v = 0; v < pGraph->n; v++) {
             if (!visited[v] && MatrixElement(pGraph, u, v) != 0 && distances[u] != INFINITY_VALUE) {
                 if (distances[u] + MatrixElement(pGraph, u, v) < distances[v]) {
                     printf("Updating distances[%ld]: %ld --> ... --> %ld --> %ld; distance from %ld to %ld is %ld\n\n", v, 
                             startNodeId, u, v, u, v,(long) MatrixElement(pGraph, u, v));
                     distances[v] = distances[u] + MatrixElement(pGraph, u, v);
+                    changed = 1;
                 }
             }
+        }
+        if (changed) {
+            imgCnt++;
+
+            if (pGraph->isDirected) {
+                GenOneImage(pGraph, "DijkstraDirected", "images/DijkstraDirected", imgCnt, visited);
+            } else {
+                GenOneImage(pGraph, "DijkstraUndirected", "images/DijkstraUndirected", imgCnt, visited);
+            }            
         }
         PrintDistancesAndVisited(pGraph, distances, visited, NULL);
     }
@@ -502,142 +552,12 @@ void Dijkstra(struct Graph *pGraph, long startNodeId) {
 
     free(visited); 
 }
-```
-
-
-
-
-## 6 Practical exercise
-
-**Our tutors will NOT answer the following questions in tutorials.**
-
-**Please complete the code in Q1-Q5 (Dijkstra2() in [Graph.c](./src/Graph.c)) and then answer the questions in Quiz 5 (Week 7) on [Moodle](https://moodle.telt.unsw.edu.au/my/courses.php).**
-
-```C
-/*
-    Please complete the code in Q1-Q5.
-
-    Q1:  test whether u and v are the same node or not
-    Q2:  get v's predecessor and save the predecessor's node id in v
-    Q3:  get the name of node nid
-    Q4:  set node startNodeId to be the predecessor of itself
-    Q5:  set node u to be the predecessor of node v
- */
-
-/*
-    Display the path from u to v.
- */
-static void DisplayPath(struct Graph *pGraph, long *preNodeIds, long u, long v) {
-    struct Stack *pStack = CreateStack();
-    StackPush(pStack, v);
-    while (______Q1______) {     
-        ______Q2______;
-        StackPush(pStack, v);
-    }
-    printf("\t");
-    while(!StackIsEmpty(pStack)) {
-        STACK_ITEM_T nid = StackPop(pStack);
-        printf("%s",  ______Q3______);   
-        if (!StackIsEmpty(pStack)) {
-            printf(" --> ");
-        }
-    }
-    printf("\n");
-    ReleaseStack(pStack);
-
-}
-
-#define NO_PRE_NODE  -1
-
-void Dijkstra2(struct Graph *pGraph, long startNodeId) {
-    assert(IsLegalNodeNum(pGraph, startNodeId));
-
-    AdjMatrixElementTy *distances = pGraph->distances;
-    int *visited = (int *) malloc(pGraph->n * sizeof(int));
-    long *preNodeIds = (long *) malloc(pGraph->n * sizeof(long));
-
-    assert(visited && preNodeIds);
-
-    static long cnt = 0;          
-    
-    // 
-    for (long i = 0; i < pGraph->n; i++) {
-        distances[i] = INFINITY_VALUE;
-        visited[i] = 0;
-        preNodeIds[i] = NO_PRE_NODE;
-    }
-    GenOneImage(pGraph, "Dijkstra2", "images/Dijkstra2", cnt, visited);  
-    //
-    distances[startNodeId] = 0;
-    ______Q4______;
-
-    for (long i = 0; i < pGraph->n; i++) {
-        long u = getNodeIdWithMinDistance(distances, visited, pGraph->n);
-        visited[u] = 1;
-
-        cnt++;
-        GenOneImage(pGraph, "Dijkstra2", "images/Dijkstra2", cnt, visited);
-
-        for (long v = 0; v < pGraph->n; v++) {
-            if (!visited[v] && MatrixElement(pGraph, u, v) != 0 && distances[u] != INFINITY_VALUE) {
-                if (distances[u] + MatrixElement(pGraph, u, v) < distances[v]) {
-                    distances[v] = distances[u] + MatrixElement(pGraph, u, v);
-                    ______Q5______;
-                }
-            }
-        }
-    }
-    
-    for (long v = 0; v < pGraph->n; v++) {
-        if (distances[v] == INFINITY_VALUE) {
-            printf("Shortest path from node %s to node %s: INF \n", 
-                    pGraph->pNodes[startNodeId].name, 
-                    pGraph->pNodes[v].name);
-        } else {
-            printf("Shortest path from node %s to node %s: %ld\n", 
-                    pGraph->pNodes[startNodeId].name, 
-                    pGraph->pNodes[v].name, 
-                    (long) distances[v]);
-            DisplayPath(pGraph, preNodeIds, startNodeId, v);
-        }
-    }
-
-    free(preNodeIds);
-    free(visited);
-}
-```
-
-## Once you have completed the code in Q1-Q5 correctly, you will see the following output.
-
-
-``` sh
-
-Week7$ make
-
-Week7$ ./main
-
-...
-
-Dijkstra2() starting from node 3:
-
-Shortest path from node 3 to node 0: 4
-	3 --> 0
-Shortest path from node 3 to node 1: INF 
-Shortest path from node 3 to node 2: 6
-	3 --> 4 --> 2
-Shortest path from node 3 to node 3: 0
-	3
-Shortest path from node 3 to node 4: 2
-	3 --> 4
-Shortest path from node 3 to node 5: 11
-	3 --> 4 --> 2 --> 5
-Shortest path from node 3 to node 6: 7
-	3 --> 4 --> 6
-Shortest path from node 3 to node 7: 10
-	3 --> 4 --> 6 --> 7
 
 
 ```
+
+
+
 
 
 

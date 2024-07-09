@@ -2,7 +2,7 @@
 
 ``` sh
 /*******************************************************************
-                Tutorial 6    Tree Traversal
+                    Tree Traversal
 
     1.  Pre-order traversal
 
@@ -15,15 +15,15 @@
  *******************************************************************/
 ``` 
 
-There are three ways to traverse a binary tree in depth-first order: **in-order**, **pre-order** and **post-order**.
-
 We have discussed how to create a *.dot file in [COMP9024/Trees/Tree2Dot](../../Trees/Tree2Dot/README.md) for a binary tree.
 
-In this tutorial, we study how to traverse a binary tree in recursive functions.
+There are three ways to traverse a binary tree in depth-first order: **in-order**, **pre-order** and **post-order**.
 
-Based on the data stack introduced in [COMP9024/Stacks/Stack_LL](../../Stacks/Stack_LL/README.md), we also discuss non-recursive algorithms for performing pre-order and post-order traversals of trees, with a focus on tracking the state of each tree node.
+First, we will study how to perform a recursive DFS traversal on a binary tree.
 
-Non-recursive in-order traversal is left as the weekly practical exercise.
+Based on the data stack introduced in [COMP9024/Stacks/Stack_LL](../../Stacks/Stack_LL/README.md), we will also discuss non-recursive algorithms for performing pre-order and post-order traversals of trees, with a focus on tracking the state of each tree node.
+
+Non-recursive in-order traversal is left as the weekly practical exercise in [Tutorial 6](../../Tutorials/Week8/README.md).
 
 
 ### In-Order Traversal
@@ -53,7 +53,7 @@ Non-recursive in-order traversal is left as the weekly practical exercise.
 (3) The root node is traversed.
 
 
-## 1 How to download COMP9024/Tutorials/Week8 in [CSE VLAB](https://vlabgateway.cse.unsw.edu.au/)
+## 1 How to download this project in [CSE VLAB](https://vlabgateway.cse.unsw.edu.au/)
 
 Open a terminal (Applications -> Terminal Emulator)
 
@@ -61,9 +61,9 @@ Open a terminal (Applications -> Terminal Emulator)
 
 $ git clone https://github.com/sheisc/COMP9024.git
 
-$ cd COMP9024/Tutorials/Week8
+$ cd COMP9024/Trees/TreeTraversal
 
-Week8$ 
+TreeTraversal$ 
 
 ```
 
@@ -73,11 +73,11 @@ Week8$
 
 ```sh
 
-Week8$ code
+TreeTraversal$ code
 
 ```
 
-Two configuration files (Week8/.vscode/[launch.json](https://code.visualstudio.com/docs/cpp/launch-json-reference) and Week8/.vscode/[tasks.json](https://code.visualstudio.com/docs/editor/tasks)) have been preset.
+Two configuration files (TreeTraversal/.vscode/[launch.json](https://code.visualstudio.com/docs/cpp/launch-json-reference) and TreeTraversal/.vscode/[tasks.json](https://code.visualstudio.com/docs/editor/tasks)) have been preset.
 
 
 
@@ -85,7 +85,7 @@ Two configuration files (Week8/.vscode/[launch.json](https://code.visualstudio.c
 
 In the window of Visual Studio Code, please click "File" and "Open Folder",
 
-select the folder "COMP9024/Tutorials/Week8", then click the "Open" button.
+select the folder "COMP9024/Trees/TreeTraversal", then click the "Open" button.
 
 
 #### 2.2 Build the project in VS Code
@@ -149,9 +149,9 @@ Makefile is discussed in [COMP9024/C/HowToMake](../../C/HowToMake/README.md).
 
 ``` sh
 
-Week7$ make
+TreeTraversal$ make
 
-Week7$ ./main
+TreeTraversal$ ./main
 
 *****************  PreOrderTraversal() **********************
 Visiting 100
@@ -183,12 +183,6 @@ Visiting 97
 Visiting 99
 Visiting 101
 
-
-*****************  InOrderTraversal2() **********************
-After completing the code in Q1-Q5 (BiTree.c), please also uncomment line 45 in src/main.c:
-
-
-
 *****************  PostOrderTraversal2() **********************
 Visiting 97
 Visiting 99
@@ -205,7 +199,7 @@ Visiting 100
 
 
 ```sh
-Week7$ make view
+TreeTraversal$ make view
 ```
 
 **Click on the window of 'feh' or use your mouse scroll wheel to view images**.
@@ -227,6 +221,10 @@ Here, **feh** is an image viewer available in [CSE VLAB](https://vlabgateway.cse
 |Nodes on call stack: $\color{red}{97}$, 98, 100| Nodes on call stack: $\color{red}{99}$, 98, 100 | Nodes on call stack: $\color{red}{101}$, 100|
 | <img src="images/PreOrderTraversal2_0003.png" width="50%" height="50%"> |  <img src="images/PreOrderTraversal2_0004.png" width="50%" height="50%"> | <img src="images/PreOrderTraversal2_0005.png" width="50%" height="50%"> |
 
+| Call Tree and Binary Tree | 
+|:-------------:|
+| <img src="diagrams/PreOrderTraversal.png" width="80%" height="80%"> | 
+
 #### 3.2.2 In-order traversal
 
 | Initial | Visiting 97  |  Visiting 98  |
@@ -239,6 +237,10 @@ Here, **feh** is an image viewer available in [CSE VLAB](https://vlabgateway.cse
 |:-------------:|:-------------:|:-------------:|
 | Nodes on call stack: $\color{red}{99}$, 98, 100| Nodes on call stack: $\color{red}{100}$|Nodes on call stack: $\color{red}{101}$, 100|
 | <img src="images/InOrderTraversal2_0003.png" width="50%" height="50%"> |  <img src="images/InOrderTraversal2_0004.png" width="50%" height="50%"> | <img src="images/InOrderTraversal2_0005.png" width="50%" height="50%"> |
+
+| Call Tree and Binary Tree | 
+|:-------------:|
+| <img src="diagrams/InOrderTraversal.png" width="80%" height="80%"> | 
 
 #### 3.2.3 Post-order traversal
 
@@ -253,6 +255,9 @@ Here, **feh** is an image viewer available in [CSE VLAB](https://vlabgateway.cse
 | Nodes on call stack: $\color{red}{98}$, 100| Nodes on call stack: $\color{red}{101}$, 100|Nodes on call stack: $\color{red}{100}$|
 | <img src="images/PostOrderTraversal2_0003.png" width="50%" height="50%"> |  <img src="images/PostOrderTraversal2_0004.png" width="50%" height="50%"> | <img src="images/PostOrderTraversal2_0005.png" width="50%" height="50%"> |
 
+| Call Tree and Binary Tree | 
+|:-------------:|
+| <img src="diagrams/PostOrderTraversal.png" width="80%" height="80%"> | 
 
 ## 4 Data structures
 
@@ -340,7 +345,7 @@ there are three times we arrive at a binary tree node:
 We can use the following node states to represent different stages
 when we walk through a binary tree node in a non-recursive algorithm.
 ```
-<img src="images/NodeState.png" width="50%" height="50%">
+<img src="diagrams/NodeState.png" width="50%" height="50%">
 
 ```sh
 It is a simple finite-state machine, with the following state transition:
@@ -361,6 +366,11 @@ For a non-recursive post-order traversal,
 ```
 
 **For more details about Deterministic Finite Automata (DFA) , please see [Programming Languages and Compilers (COMP3131/COMP9102)](https://webcms3.cse.unsw.edu.au/COMP3131/24T1/).**
+
+
+| State Transition |
+|:-------------:|
+| <img src="diagrams/StateTransition.png"> |
 
 #### 5.2.2 Non-recursive pre-order traversal
 ```C
@@ -457,27 +467,4 @@ void PostOrderTraversal2(BiTreeNodePtr root, NodeVisitor visit) {
         ReleaseStack(pStack);
     }
 }
-```
-
-## 6 Practical exercise
-
-**Our tutors will NOT answer the following questions in tutorials.**
-
-**Please complete the code in Q1-Q5 (InOrderTraversal2() in [BiTree.c](./src/BiTree.c)) and then answer the questions in Quiz 6 (Week 8) on [Moodle](https://moodle.telt.unsw.edu.au/my/courses.php).**
-
-
-## Once you have completed the code in Q1-Q5 correctly, you will see the following output.
-
-
-``` sh
-
-...
-
-*****************  InOrderTraversal2() **********************
-Visiting 97
-Visiting 98
-Visiting 99
-Visiting 100
-Visiting 101
-
 ```

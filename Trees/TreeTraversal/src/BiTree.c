@@ -3,7 +3,7 @@
 #include <stdlib.h>   // malloc() and free()
 #include <string.h>   // memset()
 #include "BiTree.h"
-
+#include "Stack.h"
 #include "Queue.h"
 
 /*
@@ -28,7 +28,6 @@ BiTreeNodePtr CreateBinaryTreeNode(long numVal, char *nodeName, BiTreeNodePtr le
     return pNode;
 }
 
-#if 0
 BiTreeNodePtr CreateBinaryTree(void) {
     /*********************************  
 
@@ -56,13 +55,20 @@ BiTreeNodePtr CreateBinaryTree(void) {
 #endif
     return root;
 }
-#endif
 
 void ReleaseBinaryTree(BiTreeNodePtr root) {
     if (root) {
         ReleaseBinaryTree(root->leftChild);
         ReleaseBinaryTree(root->rightChild);
         free(root);
+    }
+}
+
+void ResetNodeState(BiTreeNodePtr root) {
+    if (root) {
+        ResetNodeState(root->leftChild);
+        ResetNodeState(root->rightChild);
+        root->visited = 0;
     }
 }
 
@@ -92,6 +98,140 @@ void PostOrderTraversal(BiTreeNodePtr root, NodeVisitor visit) {
     }
 }
 
+void PreOrderTraversal2(BiTreeNodePtr root, NodeVisitor visit) {
+    static long cnt = 0;    
+
+    if (root) {
+        struct Stack *pStack = CreateStack();
+        root->state = NS_FROM_UP;
+
+        GenOneImage(root, "PreOrderTraversal2", "images/PreOrderTraversal2", cnt);
+
+        StackPush(pStack, root);
+        while (!StackIsEmpty(pStack)) {
+            BiTreeNodePtr curNode = StackPeek(pStack);
+            switch (curNode->state) {
+                case NS_FROM_UP:
+                    visit(curNode);
+                    cnt++;
+                    GenOneImage(root, "PreOrderTraversal2", "images/PreOrderTraversal2", cnt);        
+                    // When curNode becomes the top node again, it means we have visited its left sub-tree.
+                    curNode->state = NS_FROM_LEFT;
+                    // Push its left child (if existing)
+                    if (curNode->leftChild) {
+                        curNode->leftChild->state = NS_FROM_UP;
+                        StackPush(pStack, curNode->leftChild);
+                    }
+                    break;
+                case NS_FROM_LEFT:
+                    // When curNode becomes the top node again, it means we have visited its right sub-tree.
+                    curNode->state = NS_FROM_RIGHT;
+                    if (curNode->rightChild) {
+                        curNode->rightChild->state = NS_FROM_UP;
+                        StackPush(pStack, curNode->rightChild);
+                    }
+                    break;
+                case NS_FROM_RIGHT:
+                    // We can pop the node now
+                    StackPop(pStack);
+                    break;
+                default:
+                    break;
+            }
+        }
+        ReleaseStack(pStack);
+    }
+} 
+
+#if 0
+
+/*
+    Please complete the code in Q1-Q5.
+
+    Non-recursive in-order traversal.
+ */
+void InOrderTraversal2(BiTreeNodePtr root, NodeVisitor visit) {
+    if (root) {
+        struct Stack *pStack = CreateStack();
+        root->state = NS_FROM_UP;
+
+        StackPush(pStack, root);
+        while (!StackIsEmpty(pStack)) {
+            BiTreeNodePtr curNode = StackPeek(pStack);
+            
+            switch (curNode->state) {
+                case NS_FROM_UP:
+                    ______Q1______;
+                    if (curNode->leftChild) {
+                        ______Q2______;
+                        StackPush(pStack, curNode->leftChild);
+                    }
+                    break;
+                case NS_FROM_LEFT:
+                    ______Q3______;
+                    ______Q4______;
+                    if (curNode->rightChild) {
+                        curNode->rightChild->state = NS_FROM_UP;
+                        StackPush(pStack, curNode->rightChild);
+                    }
+                    break;
+                case NS_FROM_RIGHT:
+                    ______Q5______;
+                    break;
+                default:
+                    break;
+            }
+        }
+        ReleaseStack(pStack);
+    }
+}
+#endif
+
+void PostOrderTraversal2(BiTreeNodePtr root, NodeVisitor visit) {
+    static long cnt = 0;
+
+    if (root) {
+        struct Stack *pStack = CreateStack();
+        root->state = NS_FROM_UP;
+
+        GenOneImage(root, "PostOrderTraversal2", "images/PostOrderTraversal2", cnt);
+
+        StackPush(pStack, root);
+        while (!StackIsEmpty(pStack)) {
+            BiTreeNodePtr curNode = StackPeek(pStack);
+            switch (curNode->state) {
+                case NS_FROM_UP:
+                    // When curNode becomes the top node again, it means we have visited its left sub-tree.          
+                    curNode->state = NS_FROM_LEFT;
+                    // Push its left child (if existing)
+                    if (curNode->leftChild) {
+                        curNode->leftChild->state = NS_FROM_UP;
+                        StackPush(pStack, curNode->leftChild);
+                    }
+                    break;
+                case NS_FROM_LEFT:
+                    // when curNode becomes the top node again, it means we have visited its right sub-tree.
+                    curNode->state = NS_FROM_RIGHT;
+                    // Push its right child (if existing)
+                    if (curNode->rightChild) {
+                        curNode->rightChild->state = NS_FROM_UP;
+                        StackPush(pStack, curNode->rightChild);
+                    }
+                    break;
+                case NS_FROM_RIGHT:
+                    visit(curNode);
+                    cnt++;
+                    GenOneImage(root, "PostOrderTraversal2", "images/PostOrderTraversal2", cnt);
+                    // We can pop the node now
+                    StackPop(pStack);
+                    break;
+                default:
+                    break;
+            }
+        }
+        ReleaseStack(pStack);
+    }
+}
 
 
 #define FILE_NAME_LEN  255
@@ -125,10 +265,11 @@ static void DisplayVisited(FILE *dotFile, BiTreeNodePtr root) {
     }
 }
 
+
 /*
     Dot Files
 
-    We assume each node has a distinct key value.
+    We simple assume each node has a distinct key value.
 
    
           100
@@ -197,115 +338,3 @@ void BiTree2Dot(BiTreeNodePtr root,
         fclose(dotFile);
     }                
 }
-
-/////////////////////////////////// Binary Search Tree ///////////////////////////////////////////
-
-void BiTreeInsert(BiTreeNodePtr *pNodePtr, long numVal, char *nodeName) {  
-    BiTreeNodePtr pNode = *pNodePtr;
-    if (pNode == NULL) {
-        BiTreeNodePtr tmp = CreateBinaryTreeNode(numVal, nodeName, NULL, NULL);
-        *pNodePtr = tmp;
-    } else {
-        if (numVal < pNode->value.numVal) {
-            BiTreeInsert(&pNode->leftChild, numVal, nodeName);
-        } else if (numVal > pNode->value.numVal) {
-            BiTreeInsert(&pNode->rightChild, numVal, nodeName);
-        } else {
-            // If numVal is already in the binary search tree, do nothing.
-        }
-    }  
-}
-
-#if 0
-BiTreeNodePtr BiTreeSearch(BiTreeNodePtr root, long numVal) {
-    if (______Q1______) {
-        return ______Q2______;
-    } else if (numVal == root->value.numVal) {
-        return ______Q3______;
-    } else if (numVal < root->value.numVal) {
-        return ______Q4______;
-    } else { // numVal > root->value.numVal
-        return ______Q5______;
-    }
-}
-#endif
-
-BiTreeNodePtr BiTreeMinValueNode(BiTreeNodePtr root) {
-    BiTreeNodePtr cur = root;
-    // Get the left-most node
-    while ((cur != NULL) && (cur->leftChild != NULL)) {
-        cur = cur->leftChild;
-    }
-    return cur;
-}
-
-void BiTreeDelete(BiTreeNodePtr *pRoot, BiTreeNodePtr *pNodePtr, long numVal) {
-    static long cnt = 0;
-
-    BiTreeNodePtr pNode = *pNodePtr;
-    if (pNode) {
-        if (numVal < pNode->value.numVal) {
-            BiTreeDelete(pRoot, &(pNode->leftChild), numVal);
-        } else if (numVal > pNode->value.numVal) {
-            BiTreeDelete(pRoot, &(pNode->rightChild), numVal);
-        } else {
-            /************************************************************************
-                If the node (to be deleted) has:
-
-                    0 child:
-
-                        leftChild == NULL && rightChild == NULL    // case 00
-
-                    1 child:
-
-                        leftChild == NULL && rightChild != NULL    // case 01
-
-                        or 
-                        leftChild != NULL && rightChild == NULL    // case 10
-                 
-                    2 children:
-
-                        leftChild != NULL && rightChild != NULL    // case 11
-
-             **************************************************************************/
-            
-            if (pNode->leftChild == NULL) {   // case 00 and case 01
-                BiTreeNodePtr tmp = pNode->rightChild;
-                printf("deleting %ld\n", pNode->value.numVal);
-                free(pNode);
-                *pNodePtr = tmp;
-
-                cnt++;
-                GenOneImage(*pRoot, "BiTreeDelete", "images/BiTreeDelete", cnt);
-            } else if (pNode->rightChild == NULL) { // case 10
-                BiTreeNodePtr tmp = pNode->leftChild;
-                printf("deleting %ld\n", pNode->value.numVal);      
-                free(pNode);
-                *pNodePtr = tmp;
-
-                cnt++;
-                GenOneImage(*pRoot, "BiTreeDelete", "images/BiTreeDelete", cnt);                
-            } else {
-                // case 11:  with two children
-                // Get pNode's in-order successor, which is left-most node in its right sub-tree.
-                BiTreeNodePtr pSuccessor = BiTreeMinValueNode(pNode->rightChild);
-
-                // (Swapping is done for clearer debugging output)
-                // Swap the values of the node pointed to by pNode and its in-order successor              
-                NodeValue val = pNode->value;
-                // Copy the successor's value (this copy is necessary)
-                pNode->value = pSuccessor->value;
-                pSuccessor->value = val;
-
-                // Display the inconsistent state
-                cnt++;
-                GenOneImage(*pRoot, "BiTreeDelete", "images/BiTreeDelete", cnt);
-                // Now, numVal is in right sub-tree. Let us recursively delete it.
-                // Temporarily, the whole binary search tree is at an inconsistent state.
-                // It will become consistent when the deletion is really done.
-                BiTreeDelete(pRoot, &pNode->rightChild, pSuccessor->value.numVal);
-            }
-        }
-    }
-}
-
